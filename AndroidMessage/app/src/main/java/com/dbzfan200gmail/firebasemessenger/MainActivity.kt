@@ -107,9 +107,9 @@ class MainActivity : AppCompatActivity() {
 
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
 
-            val bitmapDrawable = BitmapDrawable(bitmap)
+            photo_image.setImageBitmap(bitmap)
 
-            add_image.setBackgroundDrawable(bitmapDrawable)
+            add_image.alpha = 0f
         }
 
     }
