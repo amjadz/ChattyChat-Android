@@ -2,8 +2,10 @@ package com.dbzfan200gmail.firebasemessenger
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -62,8 +64,13 @@ class MainActivity : AppCompatActivity() {
 
         if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
 
+            var uri = data.data
 
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
 
+            val bitmapDrawable = BitmapDrawable(bitmap)
+
+            add_image.setBackgroundDrawable(bitmapDrawable)
         }
 
     }
