@@ -8,10 +8,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_new_message.*
+import kotlinx.android.synthetic.main.user_row_new_message.view.*
 
 class NewMessageActivity : AppCompatActivity() {
 
@@ -20,15 +22,6 @@ class NewMessageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_new_message)
 
         supportActionBar?.title = "Select User"
-
-        val adapter = GroupAdapter<ViewHolder>()
-
-        adapter.add(UserItem())
-        adapter.add(UserItem())
-        adapter.add(UserItem())
-
-
-        recyclerview_newmessage.adapter
 
         fetchUsers()
     }
@@ -42,7 +35,11 @@ class NewMessageActivity : AppCompatActivity() {
 
                 p0.children.forEach{
                     val user = it.getValue(UserModel::class.java)
-                    adapter.add(UserItem())
+                    if(user != null){
+                        adapter.add(UserItem(user))
+
+
+                    }
                 }
 
                 recyclerview_newmessage.adapter = adapter
@@ -56,14 +53,15 @@ class NewMessageActivity : AppCompatActivity() {
     }
 }
 
-class UserItem: Item<ViewHolder>() {
+class UserItem(val user: UserModel): Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.user_row_new_message
 
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-
+        viewHolder.itemView.username_textview.text = user.email
+        Picasso.get().load(user.profileImage).into(viewHolder.itemView.user_image_circle)
     }
 }
 
