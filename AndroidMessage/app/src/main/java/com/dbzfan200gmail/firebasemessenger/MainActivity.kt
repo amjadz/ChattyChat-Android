@@ -19,34 +19,44 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        registerButton()
-        loginIntent()
-        addPhoto()
+        register_button.setOnClickListener {
+            registerButton()
 
+        }
+
+
+        textView.setOnClickListener {
+            loginIntent()
+
+
+        }
+
+        add_image.setOnClickListener {
+            addPhoto()
+
+        }
     }
 
     private fun registerButton() {
-        register_button.setOnClickListener {
-            val email = email.text.toString()
-            val password = password.text.toString()
-            val username = name.text.toString()
+        val email = email.text.toString()
+        val password = password.text.toString()
+        val username = name.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()){
+        if (email.isEmpty() || password.isEmpty()){
                 Toast.makeText(this, "Please Enter Email and Password", Toast.LENGTH_LONG).show()
-            } else {
-                firebaseCreateUser(email, password)
+        } else {
+            firebaseCreateUser(email, password)
 
-            }
         }
+
     }
 
     private fun loginIntent(){
-        textView.setOnClickListener {
 
-            val loginIntent = Intent(this, LoginActivity::class.java)
-            startActivity(loginIntent)
+        val loginIntent = Intent(this, LoginActivity::class.java)
+        startActivity(loginIntent)
 
-        }
+
 
     }
 
@@ -85,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
 
-       var user = UserModel(uid, password.text.toString() ,email.text.toString(), name.text.toString(), profileImageUrl)
+       var user = UserModel(uid, password.text.toString(), email.text.toString(), name.text.toString(), profileImageUrl)
 
        ref.setValue(user)
            .addOnSuccessListener {
@@ -116,14 +126,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addPhoto(){
-        add_image.setOnClickListener {
-
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
 
         startActivityForResult(intent, 0)
 
-        }
+
     }
 
 }

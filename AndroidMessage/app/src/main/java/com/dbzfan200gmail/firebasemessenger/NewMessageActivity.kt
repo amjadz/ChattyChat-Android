@@ -1,5 +1,6 @@
 package com.dbzfan200gmail.firebasemessenger
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,6 +41,15 @@ class NewMessageActivity : AppCompatActivity() {
 
 
                     }
+                }
+
+                adapter.setOnItemClickListener { item, view ->
+                    val intent = Intent(view.context, ChatLogActivity::class.java)
+                    startActivity(intent)
+
+                    finish()
+
+
                 }
 
                 recyclerview_newmessage.adapter = adapter

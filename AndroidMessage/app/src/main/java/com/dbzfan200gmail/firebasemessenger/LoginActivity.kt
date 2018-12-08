@@ -21,7 +21,6 @@ class LoginActivity: AppCompatActivity() {
 
 
     private fun login(){
-
         login_button.setOnClickListener {
 
             val emailLogin = email_login.text.toString()
