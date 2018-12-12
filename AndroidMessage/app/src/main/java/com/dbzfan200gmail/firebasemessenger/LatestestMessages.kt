@@ -19,7 +19,7 @@ class LatestestMessages : AppCompatActivity() {
 
     private fun userLogin(){
 
-        val uid =FirebaseAuth.getInstance().uid
+        val uid = FirebaseAuth.getInstance().uid
 
         if(uid == null){
             val intent = Intent(this, MainActivity::class.java)

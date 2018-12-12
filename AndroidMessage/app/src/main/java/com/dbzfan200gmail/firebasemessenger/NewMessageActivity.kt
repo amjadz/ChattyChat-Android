@@ -3,6 +3,7 @@ package com.dbzfan200gmail.firebasemessenger
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Contacts.SettingsColumns.KEY
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -23,9 +24,15 @@ class NewMessageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_new_message)
 
         supportActionBar?.title = "Select User"
+        val username = intent.getStringExtra(NewMessageActivity.USER_KEY)
+        supportActionBar?.title = username
 
         fetchUsers()
     }
+    companion object {
+        val USER_KEY = "USER_KEY"
+    }
+
 
     private fun fetchUsers() {
        val ref =  FirebaseDatabase.getInstance().getReference("/users")
@@ -44,7 +51,11 @@ class NewMessageActivity : AppCompatActivity() {
                 }
 
                 adapter.setOnItemClickListener { item, view ->
+                    val userItem = item as UserItem
+
                     val intent = Intent(view.context, ChatLogActivity::class.java)
+                    val user = intent.putExtra(USER_KEY, userItem.user)
+
                     startActivity(intent)
 
                     finish()
@@ -70,7 +81,7 @@ class UserItem(val user: UserModel): Item<ViewHolder>() {
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.username_textview.text = user.email
+        viewHolder.itemView.username_textview.text = user.username
         Picasso.get().load(user.profileImage).into(viewHolder.itemView.user_image_circle)
     }
 }

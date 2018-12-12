@@ -30,6 +30,9 @@
                     android:value=".LatestestMessages"/>
         </activity>
         <activity android:name=".ChatLogActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".LatestestMessages"/>
         </activity>
     </application>
 
