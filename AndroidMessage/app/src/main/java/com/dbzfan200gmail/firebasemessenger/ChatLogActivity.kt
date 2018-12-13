@@ -13,6 +13,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_chat_log.*
+import kotlinx.android.synthetic.main.activity_new_message.*
 import kotlinx.android.synthetic.main.chat_from_row.view.*
 import kotlinx.android.synthetic.main.chat_to_row.view.*
 
@@ -44,7 +45,6 @@ class ChatLogActivity : AppCompatActivity() {
 
     private fun preformSendMessage(){
         val text = editText_chat_log.text.toString()
-        val ref = FirebaseDatabase.getInstance().getReference("/messages/").push()
 
         val fromId = FirebaseAuth.getInstance().uid
         val user = intent.getParcelableExtra<UserModel>(NewMessageActivity.USER_KEY)
@@ -52,20 +52,27 @@ class ChatLogActivity : AppCompatActivity() {
 
         if(fromId == null) return
 
-        val key = ref.key
+        val ref = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId").push()
 
-        if (key == null) return
+        val toRef = FirebaseDatabase.getInstance().getReference("/user-messages/$toId/$fromId").push()
 
-        val chatMessage = ChatMessage(key, text, fromId, toId, System.currentTimeMillis() / 1000)
+        val chatMessage = ChatMessage(ref.key!!, text, fromId, toId, System.currentTimeMillis() / 1000)
 
         ref.setValue(chatMessage).addOnSuccessListener {
             Log.v("Message", "Message Sent")
+            editText_chat_log.text.clear()
+            recylerview_chat_log.scrollToPosition(adapter.itemCount - 1)
         }
+
+        toRef.setValue(chatMessage)
 
     }
 
     private fun listenForMessages(){
-        val ref = FirebaseDatabase.getInstance().getReference("/messages")
+        val fromId = FirebaseAuth.getInstance().uid
+        val toId = toUser?.uid
+
+        val ref = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId")
 
         ref.addChildEventListener(object: ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
