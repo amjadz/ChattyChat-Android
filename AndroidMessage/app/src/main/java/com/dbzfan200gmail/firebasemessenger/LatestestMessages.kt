@@ -3,17 +3,18 @@ package com.dbzfan200gmail.firebasemessenger
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.renderscript.Sampler
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.dbzfan200gmail.firebasemessenger.NewMessageActivity.Companion.USER_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_latestest_messages.*
 import kotlinx.android.synthetic.main.latest_message_row.view.*
-import java.security.acl.Group
 
 class LatestestMessages : AppCompatActivity() {
     val adapter = GroupAdapter<ViewHolder>()
@@ -30,7 +31,19 @@ class LatestestMessages : AppCompatActivity() {
         setContentView(R.layout.activity_latestest_messages)
 
         recyclerview_latest_messages.adapter = adapter
+        recyclerview_latest_messages.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
+        adapter.setOnItemClickListener{ item, view ->
+            val intent = Intent(this, ChatLogActivity::class.java)
+
+            val row =  item as LatestMessageRow
+
+            intent.putExtra(NewMessageActivity.USER_KEY, row.chatPartnerUser)
+
+            startActivity(intent)
+
+
+        }
 
         listenForLatestMessage()
         fetchCurrentUser()
@@ -38,26 +51,12 @@ class LatestestMessages : AppCompatActivity() {
         userLogin()
     }
 
-    class LatestMesasgeRow(val chatMessage: ChatMessage): Item<ViewHolder>() {
-        override fun bind(viewHolder: ViewHolder, position: Int) {
-//            viewHolder.itemView.textView_username_latest_message.text = chatMessage.
-            viewHolder.itemView.textView_latest_message.text = chatMessage.text
-        }
-
-        override fun getLayout(): Int {
-            return R.layout.latest_message_row
-
-        }
-
-
-    }
-
     val messageMap = HashMap<String, ChatMessage>()
 
     private fun refresh(){
         adapter.clear()
         messageMap.values.forEach {
-            adapter.add((LatestMesasgeRow(it)))
+            adapter.add((LatestMessageRow(it)))
 
         }
 
@@ -81,7 +80,7 @@ class LatestestMessages : AppCompatActivity() {
                 refresh()
 
 
-                adapter.add(LatestMesasgeRow(chatMessage))
+                adapter.add(LatestMessageRow(chatMessage))
 
 
             }
