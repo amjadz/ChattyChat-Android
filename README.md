@@ -5,7 +5,12 @@ Welcome to ChattyChat, the android version of the app! I will also be starting w
 
 # Features To Add
 Facebook Authentication
+
 Google Authentication 
+
 Global Chat 
+
 File Sharing 
+
 Sms Support 
+
