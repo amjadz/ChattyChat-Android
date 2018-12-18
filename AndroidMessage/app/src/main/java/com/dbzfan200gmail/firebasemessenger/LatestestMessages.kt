@@ -45,6 +45,7 @@ class LatestestMessages : AppCompatActivity() {
 
         }
 
+
         listenForLatestMessage()
         fetchCurrentUser()
 
@@ -155,6 +156,12 @@ class LatestestMessages : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+            }
+
+            R.id.global_chat -> {
+                val intent = Intent(this, GlobalChat::class.java)
+                startActivity(intent)
+
             }
 
 

@@ -1,15 +1,8 @@
 package com.dbzfan200gmail.firebasemessenger
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -20,29 +13,31 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_chat_log.*
-import kotlinx.android.synthetic.main.activity_new_message.*
+import kotlinx.android.synthetic.main.activity_global_chat.*
+import kotlinx.android.synthetic.main.chat_from_global_row.view.*
 import kotlinx.android.synthetic.main.chat_from_row.view.*
+import kotlinx.android.synthetic.main.chat_to_global_row.view.*
 import kotlinx.android.synthetic.main.chat_to_row.view.*
 
-class ChatLogActivity : AppCompatActivity() {
+class GlobalChat : AppCompatActivity() {
 
     val adapter = GroupAdapter<ViewHolder>()
     var toUser: UserModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat_log)
-        
+        setContentView(R.layout.activity_global_chat)
+
+
         toUser = intent.getParcelableExtra<UserModel>(NewMessageActivity.USER_KEY)
 
-        recylerview_chat_log.adapter = adapter
+        global_chat.adapter = adapter
 
-        supportActionBar?.title = toUser?.username
 
         listenForMessages()
 
 
-        button_send_chat_log.setOnClickListener {
+        button_send_global_chat_log.setOnClickListener {
             preformSendMessage()
 
 
@@ -51,46 +46,28 @@ class ChatLogActivity : AppCompatActivity() {
     }
 
     private fun preformSendMessage(){
-        val text = editText_chat_log.text.toString()
+        val text = editText_global_chat_log.text.toString()
 
         val fromId = FirebaseAuth.getInstance().uid
         val user = intent.getParcelableExtra<UserModel>(NewMessageActivity.USER_KEY)
-        val toId = user.uid
+        val toId = "dg"
 
         if(fromId == null) return
 
-        val ref = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId").push()
-
-        val toRef = FirebaseDatabase.getInstance().getReference("/user-messages/$toId/$fromId").push()
+        val ref = FirebaseDatabase.getInstance().getReference("/global-chat/").push()
 
         val chatMessage = ChatMessage(ref.key!!, text, fromId, toId, System.currentTimeMillis() / 1000)
 
         ref.setValue(chatMessage).addOnSuccessListener {
             Log.v("Message", "Message Sent")
-            editText_chat_log.text.clear()
-            recylerview_chat_log.scrollToPosition(adapter.itemCount - 1)
+            editText_global_chat_log.text.clear()
+            global_chat.scrollToPosition(adapter.itemCount - 1)
         }
-
-
-
-        toRef.setValue(chatMessage)
-
-        val latestestMessage = FirebaseDatabase.getInstance().getReference("/latest-messages/$fromId/$toId")
-
-        latestestMessage.setValue(chatMessage)
-
-        val latestestToMessage = FirebaseDatabase.getInstance().getReference("/latest-messages/$toId/$fromId")
-
-        latestestToMessage.setValue(chatMessage)
-
 
     }
 
     private fun listenForMessages(){
-        val fromId = FirebaseAuth.getInstance().uid
-        val toId = toUser?.uid
-
-        val ref = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId")
+        val ref = FirebaseDatabase.getInstance().getReference("/global-chat/")
 
         ref.addChildEventListener(object: ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -112,10 +89,10 @@ class ChatLogActivity : AppCompatActivity() {
                     if(chatMessage.fromId == FirebaseAuth.getInstance().uid) {
                         val currentUser = LatestestMessages.curreentUser
 
-                        adapter.add(ChatFromItem(chatMessage.text, currentUser!!))
+                        adapter.add(ChatFromGlobalItem(chatMessage.text, currentUser!!))
 
                     } else {
-                        adapter.add(ChatToItem(chatMessage.text, toUser!!))
+                        adapter.add(ChatToGlobalItem(chatMessage.text, toUser!!))
 
                     }
 
@@ -130,34 +107,35 @@ class ChatLogActivity : AppCompatActivity() {
 
         })
     }
+
 }
 
-class ChatFromItem(val text: String, val user: UserModel): Item<ViewHolder>() {
+class ChatFromGlobalItem(val text: String, val user: UserModel): Item<ViewHolder>() {
     override fun getLayout(): Int {
-        return R.layout.chat_from_row
+        return R.layout.chat_from_global_row
 
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.textView_chat_from_row.text = text
+        viewHolder.itemView.textView_chat_from_global_row.text = text
         val uri = user.profileImage
-        val toImage = viewHolder.itemView.imageView_chat_from_row
+        val toImage = viewHolder.itemView.imageView_chat_from_global_row
         Picasso.get().load(uri).into(toImage)
 
     }
 
 }
 
-class ChatToItem(val text: String, val user: UserModel): Item<ViewHolder>() {
+class ChatToGlobalItem(val text: String, val user: UserModel): Item<ViewHolder>() {
     override fun getLayout(): Int {
-        return R.layout.chat_to_row
+        return R.layout.chat_to_global_row
 
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.textView_chat_to_item.text = text
+        viewHolder.itemView.textView_chat_to_global_item.text = text
         val uri = user.profileImage
-        val toImage = viewHolder.itemView.imageView_chat_to_row
+        val toImage = viewHolder.itemView.imageView_chat_global_to_row
         Picasso.get().load(uri).into(toImage)
 
     }

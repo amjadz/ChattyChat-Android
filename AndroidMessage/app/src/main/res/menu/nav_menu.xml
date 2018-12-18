@@ -10,5 +10,9 @@
           android:title="SignOut"
           app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/global_chat"
+          android:title="Global Chat"
+          app:showAsAction="ifRoom"/>
+
 
 </menu>
