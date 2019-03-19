@@ -23,8 +23,8 @@ An android chat application coded in Kotlin
 
 Reach out to me at one of the following places!
 
-- LinkedIn at <a href="https://www.linkedin.com/in/zubair-amjad/" target="_blank">`LinkedIn`</a>
-- Facebook at <a href="https://www.facebook.com/ZubairAmjad" target="_blank">`Facebook`</a>
+- <a href="https://www.linkedin.com/in/zubair-amjad/" target="_blank">`LinkedIn`</a>
+- <a href="https://www.facebook.com/ZubairAmjad" target="_blank">`Facebook`</a>
 
 ---
 
