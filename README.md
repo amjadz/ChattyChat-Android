@@ -17,9 +17,6 @@ An android chat application coded in Kotlin
 - Used the Piccasso library to display the images for the avaters
 - Authentication also uses Firebase as well as Firebase storage to store all the uploaded images.
 
-
-- I utilized this nifty <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a> for this sample `README`.
-
 ---
 
 ## Contact
