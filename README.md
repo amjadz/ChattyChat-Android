@@ -10,7 +10,14 @@ An android chat application coded in Kotlin
 
 ## Features
 
-- Going into more detail on code and technologies used
+- Used Kotlin to code out the app.
+- Used Firebase to store chat data.
+- Used the circle image view libary to round the use avater images.
+- Used the Groupie library to easialy display user messages, as well as the most recent messages sent.
+- Used the Piccasso library to display the images for the avaters
+- Authentication also uses Firebase as well as Firebase storage to store all the uploaded images.
+
+
 - I utilized this nifty <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a> for this sample `README`.
 
 ---
@@ -30,3 +37,4 @@ Reach out to me at one of the following places!
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
 - Copyright 2015 © <a href="http://fvcproductions.com" target="_blank">FVCproductions</a>.
+
