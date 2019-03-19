@@ -28,6 +28,11 @@ Reach out to me at one of the following places!
 
 ---
 
+## Coming Soon
+  - A global chat feature.
+  - Facebook and Google authentication 
+---
+
 ## License
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
